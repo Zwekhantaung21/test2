@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{ url_for('static', filename='url_icon.png') }}">
+    <title>GS1 Myanmar Data Matrix Barcode Generator</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="../static/styles/style.css">
+
+   
+</head>
+<body>
+    <div class="main">
+        <div class="popup-container">
+            <div class="popup-content">
+                <h3>Welcome to GS1 Myanmar Data Matrix Generator</h3>
+                <p>Choose your language:</p>
+                <div class="language-buttons">
+                    <span onclick="changeLanguage('en')" style="color: #F26335; cursor: pointer;">English</span>
+                    <span>|</span>
+                    <span onclick="changeLanguage('my')" style="color: #F26335; cursor: pointer;">Burmese</span>
+                </div>
+                <p id="greeting-message"></p>
+                <button onclick="closePopup()"  id="download-button2" class="refresh-button" style="cursor: pointer;">Access Generator</button>
+            </div>
+        </div>
+        <script>
+              // Function to change the language
+    function changeLanguage(lang) {
+        var greetingMessage = document.getElementById('greeting-message');
+
+        if (lang === 'en') {
+            greetingMessage.innerHTML = 'You can use our Data Matrix in your Product, Website, Marketing, Healthcare, Events etc. <br>If there is any issues related to "YOUR DISTRIBUTIONS" of Data Matrix produced by GS1 Myanmar, <br> we would like to inform you that we will not be responsible for solving it aspect an error of <br> GS1 Myanmar Data Matrix Generator(Bad resolution, ECC error, Quietzone Error). ';
+        } else if (lang === 'my') {
+            greetingMessage.innerHTML = 'GS1 Myanmar Data Matrix အား လူကြီးမင်းသုံးဆွဲလိုသည့် Product, Website, Marketing, Healthcare, Events etc. <br>အစရှိသည့်နေရာများတွင် အသုံးပြုနိုင်ပါသည်။ <br> GS1 Myanmar Generator မှ (Data Matrix ပုံမကောင်းခြင်း၊ ECC မှားခြင်း၊ Quiet Zone မှားခြင်းတို့ကြုံတွေ့ပါက GS1 Myanmar အားဆက်သွယ်ပါ။ <br>အကယ်၍ မိမိ​၏ ဖြန့်ဖြူးပြီးထုတ်ကုန်/ပစ္စည်းများတွင် အသုံးပြုပြီးသော Data Matrixများ ဖြင့်ပတ်သတ်၍ အကြောင်းကိစ္စတစုံတစ်ရာ ပေါ်ပေါက်လာပါက <br>GS1 Myanmar မှတာဝန်ယူဖြေရှင်းပေးမည် မဟုတ်ကြောင်းအသိပေးအပ်ပါသည်။ ';
+        }
+    }
+
+    // Function to close the popup section
+    function closePopup() {
+        var popupContainer = document.querySelector('.popup-container');
+        popupContainer.style.display = 'none';
+    }
+
+    // Function to handle clicks outside the popup section
+    function handleClickOutside(event) {
+        var popupContent = document.querySelector('.popup-content');
+        if (!popupContent.contains(event.target)) {
+            closePopup();
+        }
+    }
+
+    // Show the popup section on page load
+    window.addEventListener('DOMContentLoaded', function () {
+        var popupContainer = document.querySelector('.popup-container');
+        popupContainer.style.display = 'flex';
+
+        // Set the default language to Myanmar (Burmese)
+        changeLanguage('my');
+
+        // Add event listener to handle clicks outside the popup section
+        document.addEventListener('click', handleClickOutside);
+    });
+        </script>
+        <div class="left-side">
+            <img src="../static/gs1_logo.png" width="30%" alt="">
+            <h1 style="color: #012D6C;"> Data Matrix Generator</h1>
+            <span id="change-language-button">
+                မြန်မာဘာသာ
+            </span>
+            <div id="burmese-text">
+                <p style="font-size: small; color: #012D6C;">
+                    GS1 Data Matrix barcodes may contain additional information
+                    such as application identifiers (AIs) that specify the meaning and format 
+                    of the data within the barcode. You can use those apps to scan your Data Matrix- <br>
+                    <span style="color: #012D6C;">
+                        <br>
+                        <b><span style="color: red;">*</span>Scan Matrix</b>   <a href="https://apps.apple.com/us/app/scan-matrix/id1552318346" target="_blank">iOS</a> 
+                        &nbsp;
+                        <a href="https://play.google.com/store/apps/details?id=com.jnj.scanmatrix&hl=en&gl=US" target="_blank">Android</a> 
+                    </span> <br>
+                    <span style="color: #012D6C;">
+                        <br>
+                        <strong>QRbot</strong>    <a href="https://apps.apple.com/us/app/qr-code-barcode-scanner/id1048473097" target="_blank">iOS</a> 
+                        &nbsp;
+                        <a href="https://play.google.com/store/apps/details?id=net.qrbot" target="_blank">Android</a> 
+                    </span>
+                </p>
+            </div>
+    
+            <div id="english-text">
+                <p style="font-size: small; color: #012D6C;">
+                    GS1 Data Matrix ဘားကုဒ်များတွင် အပိုအချက်အလက်များ ပါဝင်နိုင်သည်။
+                    အဓိပ္ပာယ်နှင့် ဖော်မတ်ကို သတ်မှတ်ပေးသော အပလီကေးရှင်း အမှတ်အသားများ (AIs) ကဲ့သို့သော
+                    ဘားကုဒ်အတွင်းရှိဒေတာ။ သင်၏ Data Matrix- စကင်န်ဖတ်ရန် ထိုအက်ပ်များကို သင်သုံးနိုင်သည်။ <br>
+                    <span style="color: #012D6C;">
+                        <br>
+                        <b><span style="color: red;">*</span>Scan Matrix</b>   <a href="https://apps.apple.com/us/app/scan-matrix/id1552318346" target="_blank">iOS</a> 
+                        &nbsp;
+                        <a href="https://play.google.com/store/apps/details?id=com.jnj.scanmatrix&hl=en&gl=US" target="_blank">Android</a> 
+                    </span> <br>
+                    <span style="color: #012D6C;">
+                        <br>
+                        <strong>QRbot</strong>    <a href="https://apps.apple.com/us/app/qr-code-barcode-scanner/id1048473097" target="_blank">iOS</a> 
+                        &nbsp;
+                        <a href="https://play.google.com/store/apps/details?id=net.qrbot" target="_blank">Android</a> 
+                    </span>
+                </p>
+            </div>
+            <script>
+                $(document).ready(function() {
+                    $('#change-language-button').click(function() {
+                        var currentLanguage = $(this).text();
+                        var englishText = "English";
+                        var burmeseText = "မြန်မာဘာသာ";
+        
+                        if (currentLanguage === burmeseText) {
+                            $(this).text(englishText);
+                            $('#burmese-text').hide();
+                            $('#english-text').show();
+                        } else {
+                            $(this).text(burmeseText);
+                            $('#english-text').hide();
+                            $('#burmese-text').show();
+                        }
+                    });
+                });
+            </script>
+            <button id="download-button2" style="cursor: pointer;">GS1 Digital Link ⮞
+                <!-- <img src="../static/link.png" alt="" width="14px"> -->
+            </button><br><br>
+            <iframe width="80%" height="215" src="https://www.youtube.com/embed/1gGdWfCjxBc" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <div class="right-side">
+            <form id="barcode-form">
+                <label for="barcode-input" style="color: #012D6C;">
+                    <strong>Enter or Paste Pure AI syntax or URL/URI</strong>
+                </label><br><br>
+                <span style="color: #012D6C;">Example Pure AI syntax </span><br>
+                <label style="color: #012D6C; font-size: 13px; text-decoration: underline;" class="example-text">01088300001523221722122510ABCDEF211234</label> <br><br>
+                <input  type="text" id="barcode-input" required><br>
+            </form>
+            <div id="result"></div>
+            <img id="barcode-image" src="../static/GS1MM_Nodata.png" alt="Data Matrix Barcode">
+            <a id="download-button" href="" download="barcode.png" style="display: none;">Download Image</a>
+            <a id="pdf-download-button" href="#" style="display: none;">Download Verify</a>
+        </div>
+       
+    </div>
+    <div>
+        <p style="text-align: center; font-size: 12px;">©2023 Developed by 
+            <span style="color: #b3583a;">
+            Zwe Khant Aung. 
+        </span>
+            All rights reserved.</p>
+    </div>
+    <script src="../static/js/script.js"></script>
+</body>
+</html>
