@@ -49,8 +49,11 @@ def download_zip():
 
 def generate_ai_syntax_data_matrix_barcode(data):
     encoder = DataMatrixEncoder(data)
-    encoder.save("static/GS1MM_Datamatrix.png")
+    image_path = "uploads/GS1MM_Datamatrix.png"
+    encoder.save(image_path)
     print("Data Matrix barcode with AI syntax generated successfully!")
+    return image_path
+
 
 def displayResult(data):
     pc = ""
