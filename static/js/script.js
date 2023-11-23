@@ -1,4 +1,4 @@
-
+// These formulas are only available to use for GS1 Myanmar
 $(document).ready(function() {
     $('#pdf-download-button').on('click', function() {
         window.location.href = '/download_zip';
@@ -13,8 +13,9 @@ $(document).ready(function() {
 
     $('#barcode-input').on('input', function() {
         var inputData = $(this).val();
-        if (hasInvalidStart(inputData)) { // Check for invalid start
+        if (isURL(inputData)) {
             $('#result').hide();
+            inputData = inputData.replace(/<gs>/g, '');
         } else {
             $('#result').show();
         }
@@ -22,16 +23,11 @@ $(document).ready(function() {
         displayResult(inputData);
     });
 
-    function hasInvalidStart(input) {
-        var pattern = /^[A-Z~`!@#$%^&*()_+\-=[\]{}|\\;:'",.<>/?]{2}/i;
+    function isURL(input) {
+        var pattern = /^(ftp|http|https):\/\/[^ "]+$/;
         return pattern.test(input);
     }
     
-    function hasLetters(input) {
-        var pattern = /[A-Za-z]/;
-        return pattern.test(input);
-    }
-
     function generateDataMatrixBarcode(data) {
         $.ajax({
             type: 'POST',
@@ -49,13 +45,12 @@ $(document).ready(function() {
             }
         });
     }
-    
     function displayResult(data) {
         var pc;
         var sn;
         var lot;
         var exp;
-
+    
         if (data.length === 16) {
             pc = "Product Code: " + data.substring(2);
             exp = "Expire Date: " + formatDate(data.substring(2));
@@ -64,18 +59,30 @@ $(document).ready(function() {
         } else {
             pc = "Product Code: " + data.substring(2, 16);
             exp = "Expire Date: (Y/M/D): " + formatDate(data.substring(18, 24));
-            lot = "Lot: " + data.substring(26, 32);
-            sn = "SN: " + data.substring(35, 39);
+            lot = "Lot: " + data.substring(26, data.indexOf(''));
+    
+            // Extract all characters after '21' for SN
+            var delimiter = '21';
+            var delimiterIndex = data.indexOf(delimiter);
+    
+            if (delimiterIndex !== -1) {
+                sn = "SN: " + data.substring(delimiterIndex + delimiter.length);
+            } else {
+                sn = "SN: " + data.substring(35);
+            }
         }
-
+    
         var resultText = pc + "<br>" + exp + "<br>" + lot + "<br>" + sn;
-
+    
         if (resultText.startsWith("Product Code: http")) {
             resultText = "";
         }
-
+    
         $('#result').html(resultText);
     }
+    
+    
+    
 
     function formatDate(dateString) {
         var year = dateString.substring(0, 2);
