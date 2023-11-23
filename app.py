@@ -1,3 +1,5 @@
+# This implementation is created by Zwe Khant Aung
+# This service can use only in GS1 Myanmar internal or external parties of GS1 Myanmar
 import os
 from flask import Flask, render_template, request, jsonify, send_file
 from pystrich.datamatrix import DataMatrixEncoder
@@ -49,10 +51,9 @@ def download_zip():
 
 def generate_ai_syntax_data_matrix_barcode(data):
     encoder = DataMatrixEncoder(data)
-    image_path = "uploads/GS1MM_Datamatrix.png"
-    encoder.save(image_path)
+    encoder.save("static/GS1MM_Datamatrix.png")
     print("Data Matrix barcode with AI syntax generated successfully!")
-    return image_path
+
 
 
 def displayResult(data):
@@ -63,18 +64,41 @@ def displayResult(data):
 
     if len(data) == 16:
         pc = "Product Code: " + data[2:]
-        exp = "Expire Date: " + data[2:]  # Replace with actual expiration date format
+        exp = "Expiry Date: " + data[2:]  
         lot = "Lot: " + data[2:]
         sn = "SN: " + data[2:]
     else:
         pc = "Product Code: " + data[2:16]
-        exp = "Expire Date(Year-Month-Date): " + data[18:20] + "-" + data[20:22] + "-" + data[22:24]
-        lot = "Lot: " + data[26:32]
-        sn = "SN: " + data[35:39]
+        exp = "Expiry Date(Year-Month-Date): " + data[18:20] + "-" + data[20:22] + "-" + data[22:24]
 
-    result_text = pc + "\n" + exp + "\n" + lot + "\n" + sn
+        # Extract Lot information using '' as a delimiter
+        delimiter = ''
+        lot_start = 26
+        delimiter_index = data.find(delimiter, lot_start)
+
+        if delimiter_index != -1:
+            # Find the last digit before the delimiter
+            last_digit_index = delimiter_index - 1
+            while last_digit_index >= lot_start and data[last_digit_index].isdigit():
+                last_digit_index -= 1
+
+            # Extract Lot information
+            lot = "Lot: " + data[lot_start:last_digit_index + 1]
+            extra_type = data[last_digit_index + 1:delimiter_index]
+            
+            # Extract all characters after the delimiter for SN
+            sn = "SN: " + data[delimiter_index + 1 + 2:]
+        else:
+            lot = "Lot: " + data[lot_start:]
+            extra_type = ""
+
+            # Extract all characters after the delimiter for SN
+            sn = "SN: " + data[-(delimiter_index + 1 + 2):]
+
+    result_text = pc + "\n" + exp + "\n" + lot + extra_type + "\n" + sn
     return result_text
 
+# GS1 Myanmar pdf file generate 
 def generate_pdf(data):
     pdf = FPDF()
     pdf.add_page()
@@ -116,7 +140,7 @@ def generate_pdf(data):
     # HRI text
     current_datetime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     pdf.set_font("Arial", style='B', size=10)
-    pdf.set_text_color(1, 45, 108)  # Set text color to #012D6C
+    pdf.set_text_color(1, 45, 108)  # Set text color to default (GS1 Standard) #012D6C
     pdf.set_xy(10, hri_text_y)
     pdf.cell(0, 10, "This Data Matrix is generated from GS1 Myanmar Generator", ln=True, align='C')
     pdf.cell(0, 10, f"Generated Date and Time: {current_datetime}", ln=True, align='C')
@@ -125,14 +149,14 @@ def generate_pdf(data):
     additional_text_y = hri_text_y + 10
      # Additional text
     pdf.set_font("Arial", size=10)
-    pdf.set_text_color(1, 45, 108)  # Set text color to default (blue)
+    pdf.set_text_color(1, 45, 108)  # Set text color to default (GS1 Standard)
     pdf.set_xy(10, additional_text_y)
     text = '''
     This attachment is about Verifying your Data Matrix that was produced from GS1 Myanmar. You can use our Data Matrix in your Product, Website, Marketing, Healthcare, Events etc. If there is any issues related to 'YOUR DISTRIBUTIONS' of Data Matrix produced by GS1 Myanmar, we would like to inform you that we will not be responsible for solving it aspect an error of GS1 Myanmar Data Matrix Generator(Bad resolution, ECC error and Quietzone Error). If you had an error with our generator contact us as soon as possible.    '''
     pdf.multi_cell(0, 10, text, align='J')
 
      # Check if the input data starts with "http://" or "https://"
-    if not data.startswith("http://") and not data.startswith("https://") and not data[0].isalpha():
+    if not data.startswith("http://") and not data.startswith("https://"):
         # Display the result data
         result_text = displayResult(data)
         pdf.set_font("Arial", style='B', size=10)
